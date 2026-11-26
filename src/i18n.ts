@@ -55,6 +55,8 @@ const resources = {
         qr_desc: '请选择桌台，模拟扫码绑定',
         seats: '可坐 {{count}} 人',
         quick_enter: '快速进入 A08 桌',
+        recommend_title: '今日推荐菜',
+        recommend_desc: '选好桌台后，可在点餐页加入购物车',
         img_alt: '热气腾腾的火锅菜品',
         area: {
           hall: '大厅',
@@ -293,6 +295,8 @@ const resources = {
         qr_desc: 'Select a table to simulate QR scan binding',
         seats: 'Seats {{count}}',
         quick_enter: 'Quick Enter Table A08',
+        recommend_title: "Today's Recommendations",
+        recommend_desc: 'Choose a table, then add dishes in the menu',
         img_alt: 'Steaming hotpot dishes',
         area: {
           hall: 'Hall',

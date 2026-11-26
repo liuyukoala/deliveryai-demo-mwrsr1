@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 import { Check, ChevronRight, MapPin, QrCode, Sparkles, Users } from 'lucide-react'
 import hotpot from '@/assets/hotpot.jpg'
+import { recommendedProducts } from '@/data/menu'
 import { Button } from '@/components/ui/button'
+import { money } from '@/lib/utils'
 
 const tableOptions = [
   { code: 'A08', areaKey: 'bind.area.hall', seats: 4 },
@@ -14,6 +17,7 @@ interface HomeViewProps { onBind: (table: string) => void }
 
 export function HomeView({ onBind }: HomeViewProps) {
   const { t } = useTranslation()
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({})
   return (
     <main className="relative min-h-screen overflow-hidden bg-rice-100 paper-noise">
       <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-chili-100 blur-3xl" />
@@ -33,6 +37,38 @@ export function HomeView({ onBind }: HomeViewProps) {
               <span key={item} className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm"><Check size={15} className="text-chili-500" />{item}</span>
             ))}
           </div>
+
+          <section aria-labelledby="recommendations-title" className="animate-rise mt-7 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-float backdrop-blur">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <h2 id="recommendations-title" className="text-xl font-extrabold text-charcoal-900">{t('bind.recommend_title')}</h2>
+              <p className="hidden text-sm text-charcoal-500 sm:block">{t('bind.recommend_desc')}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {recommendedProducts.map((product) => (
+                <article key={product.id} className="overflow-hidden rounded-2xl border border-charcoal-900/10 bg-rice-50">
+                  {failedImages[product.id] ? null : (
+                    <img
+                      src={product.image}
+                      alt={t(product.name)}
+                      className="h-24 w-full object-cover sm:h-28"
+                      loading="lazy"
+                      decoding="async"
+                      onError={() => setFailedImages((state) => ({ ...state, [product.id]: true }))}
+                    />
+                  )}
+                  <div className="p-3">
+                    {product.badge && (
+                      <span className="inline-flex rounded-full bg-chili-50 px-2 py-1 text-xs font-bold text-chili-600">{t(product.badge)}</span>
+                    )}
+                    <h3 className={product.badge ? 'mt-2 line-clamp-1 font-bold text-charcoal-900' : 'line-clamp-1 font-bold text-charcoal-900'}>{t(product.name)}</h3>
+                    <p className="mt-1 line-clamp-2 min-h-10 text-xs leading-5 text-charcoal-500">{t(product.description)}</p>
+                    <p className="mt-1 font-extrabold text-chili-600">{money(product.price)}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-charcoal-500 sm:hidden">{t('bind.recommend_desc')}</p>
+          </section>
         </section>
 
         <section className="animate-rise rounded-3xl border border-white/80 bg-white/90 p-4 shadow-float backdrop-blur sm:p-6">

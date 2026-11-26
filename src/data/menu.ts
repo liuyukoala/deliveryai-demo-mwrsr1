@@ -67,3 +67,9 @@ export const products: Product[] = [
 ]
 
 export const getProduct = (id: string) => products.find((product) => product.id === id)
+
+const recommendedProductIds = ['p1', 'p2', 'p3', 'p5'] as const
+
+export const recommendedProducts = recommendedProductIds
+  .map((id) => getProduct(id))
+  .filter((product): product is Product => Boolean(product))
